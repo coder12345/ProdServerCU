@@ -11,7 +11,7 @@ http.createServer(function (req, res) {
     res.write('Yo!');
     //res.setHeader('Content-Type', 'application/json');
    // res.end(JSON.stringify(Player1));
-    res.end():
+    res.end();
 }).listen(process.env.PORT || 3000);
 
 
