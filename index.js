@@ -1,69 +1,16 @@
-//Setup
-const express = require('express');
-const mysql = require('mysql');
-const app = express();
-const prompt = require("prompt-sync")({ sigint: true });
-
-function agentSelPlayer(id, portLink, tag) {
-    this.id = id;
-    this.portLink = portLink;
-    this.tag = tag;
-}
-const jsonArr = [];
-//Connect to Database
-var con = mysql.createConnection({
-    host: "sql5.freesqldatabase.com",
-    user: "sql5675756",
-    password: "UgSUiirjf7",
-    database: "sql5675756"
-});
-con.connect(function(err) {
-    if (err) throw err;
-    console.log("Connected!");
-    pullAgentSelData();
+var http = require('http'); // 1 - Import Node.js core module
+var port = 3000
+var server = http.createServer(function (req, res) {   // 2 - creating server
+    res.write('POGGGGG');
+    res.end();
 });
 
- //Pull agent Select Data
-    function pullAgentSelData() {
-        const workArr = [];
-        sql1 = "SELECT * FROM agentSelect;"
-        con.query(sql1, function (err, result) {
-            if (err) throw err;
-            console.log(result);
-            for (let i = 0; i < 10; i++) {
-                console.log(result[i].Tag);
-                jsonArr.push(new agentSelPlayer(i+1, result[i].Agent, result[i].Tag));
-            }
-            console.log(jsonArr)
-        });
-
-
-
-
-
+server.listen(port, function(error) {
+    if (error) {
+        console.log('Something went very wrong', error);
+    } else {
+        console.log('Server is listening on port ' + port)
     }
+}) //3 - listen for any incoming requests
 
-
-
-
-
-
-
-
-
-
-//Format Respnse
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-//Send HTML
-app.get("/", (req, res) => {
-    res.json(jsonArr);
-
-});
-
-
-
-//Send data
-
-
-app.listen(3000);
+console.log('Node.js web server at port 5000 is running..')
