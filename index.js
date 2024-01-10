@@ -3,6 +3,7 @@ const express = require('express');
 const mysql = require('mysql');
 const app = express();
 
+const empty = [];
 const lockedPorts = [
     "https://i.imgur.com/XnkGRO5.png", //Brimstone - 01
     "https://i.imgur.com/duNyllZ.png", //Viper - 02
@@ -29,6 +30,8 @@ const lockedPorts = [
     "https://i.imgur.com/eaHzvoi.png", //Deadlock - 23
     "https://i.imgur.com/JkIwBPv.png"  //Iso - 24
 ];
+
+
 const hoverPorts = [
     "https://i.imgur.com/FdZw2nP.png", //Brimstone - 01
     "https://i.imgur.com/AHVKpUU.png", //Viper - 02
@@ -264,9 +267,6 @@ var con = mysql.createConnection({
 con.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
-    pullAgentSelData();
-    pullLiveData();
-    console.log(jsonArr)
 });
 
  //Pull agent Select Data
@@ -274,9 +274,9 @@ con.connect(function(err) {
         sql1 = "SELECT * FROM agentSelect;"
         con.query(sql1, function (err, result) {
             if (err) throw err;
-            console.log(result);
+
             for (let i = 0; i < 10; i++) {
-                console.log(result[i].Tag);
+
                 jsonArr.push(new agentSelPlayer(i+1, result[i].Agent, result[i].Tag, result[i].locked));
             }
 
@@ -286,10 +286,11 @@ con.connect(function(err) {
         sql = "SELECT * FROM playerTable;"
         con.query(sql, function (err, result) {
             if (err) throw err;
-            console.log(result);
+
             for (let i = 0; i < 3; i++) {
 
                 jsonArr.push(new cardliveConstructor(i+1, result[i].tag, result[i].agent, result[i].kills, result[i].deaths, result[i].assists, result[i].credits, result[i].weapon, result[i].shield, result[i].living, result[i].team, result[i].hasUlt));
+                console.log(jsonArr.length);
             }
 
         });
@@ -297,23 +298,24 @@ con.connect(function(err) {
     }
 
 
-
-
-
-
-
-
-
-
 //Format Respnse
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 //Send HTML
 app.get("/", (req, res) => {
+
+    console.log("Inital:  " + jsonArr.length);
+    pullAgentSelData();
+    console.log("After Agent Select: " + jsonArr.length);
+    pullLiveData();
+    console.log("After Live Data: " + jsonArr.length);
     res.json(jsonArr);
+    jsonArr.length = 0;
+    console.log("Final: " + jsonArr.length);
+
+
 
 });
-
 
 
 //Send data
