@@ -204,10 +204,10 @@ function cardliveConstructor(id, tag, agent, kills, deaths, assists, credits, we
 
         if (team == 0) {
             if (hasUlt == 1) {
-                this.background = "https://i.imgur.com/ZLkVuxm.png"
+                this.background = "https://i.imgur.com/39rbOki.png"
 
             } else {
-                this.background = "https://i.imgur.com/Q6O5OuA.png"
+                this.background = "https://i.imgur.com/1vsgTgo.png"
             }
         } else {
             if (hasUlt == 1) {
