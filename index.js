@@ -287,7 +287,7 @@ con.connect(function(err) {
         con.query(sql, function (err, result) {
             if (err) throw err;
 
-            for (let i = 0; i < 3; i++) {
+            for (let i = 0; i < 10; i++) {
 
                 jsonArr.push(new cardliveConstructor(i+1, result[i].tag, result[i].agent, result[i].kills, result[i].deaths, result[i].assists, result[i].credits, result[i].weapon, result[i].shield, result[i].living, result[i].team, result[i].hasUlt));
                 console.log(jsonArr.length);
