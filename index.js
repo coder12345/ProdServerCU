@@ -204,17 +204,17 @@ function cardliveConstructor(id, tag, agent, kills, deaths, assists, credits, we
 
         if (team == 0) {
             if (hasUlt == 1) {
-                this.background = "https://i.imgur.com/39rbOki.png"
+                this.background = "https://i.imgur.com/39rbOki.png"  //DEF
 
             } else {
-                this.background = "https://i.imgur.com/1vsgTgo.png"
+                this.background = "https://i.imgur.com/lhR4lt8.png"
             }
         } else {
             if (hasUlt == 1) {
-                this.background = "https://i.imgur.com/bnGtj32.png"
+                this.background = "https://i.imgur.com/39rbOki.png" //
 
             } else {
-                this.background = "https://i.imgur.com/YPIUCmb.png"
+                this.background = "https://i.imgur.com/1vsgTgo.png" //ATK
             }
         }
         this.agentPic = liveLivingPorts[agent-1];
