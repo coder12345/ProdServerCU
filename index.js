@@ -204,17 +204,17 @@ function cardliveConstructor(id, tag, agent, kills, deaths, assists, credits, we
 
         if (team == 0) {
             if (hasUlt == 1) {
-                this.background = "https://i.imgur.com/39rbOki.png"  //DEF
+                this.background = "https://i.imgur.com/ZLkVuxm.png"
 
             } else {
-                this.background = "https://i.imgur.com/lhR4lt8.png"
+                this.background = "https://i.imgur.com/Q6O5OuA.png"
             }
         } else {
             if (hasUlt == 1) {
-                this.background = "https://i.imgur.com/39rbOki.png" //
+                this.background = "https://i.imgur.com/l52Rhr7.png"
 
             } else {
-                this.background = "https://i.imgur.com/1vsgTgo.png" //ATK
+                this.background = "https://i.imgur.com/7LRvabU.png"
             }
         }
         this.agentPic = liveLivingPorts[agent-1];
@@ -236,6 +236,11 @@ function cardliveConstructor(id, tag, agent, kills, deaths, assists, credits, we
 
     }
     this.tag = tag;
+    if (credits >= 0) {
+        this.credits = credits;
+    } else {
+        this.credits = 0;
+    }
 
 }
 function playerLiveData(id, tag, agent, kills, deaths, assists, credits, weapon, sheild, living, team, hasUlt) {
@@ -252,6 +257,22 @@ function playerLiveData(id, tag, agent, kills, deaths, assists, credits, weapon,
         this.team = team;
         this.living = living;
         this.hasUlt = hasUlt;
+
+
+}
+function scoreboardPacket() {
+    sql1 = "SELECT 'Score' FROM teamTable WHERE id='1';"
+    sql2 = "SELECT 'Score' FROM teamTable WHERE id='2';"
+    con.query(sql1, function (err, result) {
+        if (err) throw err;
+            this.team1S = result;
+
+    });
+    con.query(sql2, function (err, result) {
+        if (err) throw err;
+            this.team2S = result;
+
+    });
 
 
 }
@@ -296,7 +317,9 @@ con.connect(function(err) {
         });
 
     }
-
+    function pullScoreData() {
+        jsonArr.push(new scoreboardPacket());
+    }
 
 //Format Respnse
 app.use(express.json());
@@ -309,6 +332,8 @@ app.get("/", (req, res) => {
     console.log("After Agent Select: " + jsonArr.length);
     pullLiveData();
     console.log("After Live Data: " + jsonArr.length);
+    pullScoreData();
+    console.log(new scoreboardPacket().team1S);
     res.json(jsonArr);
     jsonArr.length = 0;
     console.log("Final: " + jsonArr.length);
