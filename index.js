@@ -327,7 +327,7 @@ con.connect(function(err) {
 
     }
     function pullScoreData() {
-        jsonArr.push(new scoreboardPacket());
+        //jsonArr.push(new scoreboardPacket());
     }
 
 //Format Respnse
@@ -344,7 +344,7 @@ app.get("/", (req, res) => {
     console.log("After Live Data: " + jsonArr.length);
     pullScoreData();
     console.log(new scoreboardPacket().team1S);
-    if (workingArr.length() = 21) {
+    if (workingArr.length() == 21) {
         jsonArr = workingArr
     }
     res.json(jsonArr);
