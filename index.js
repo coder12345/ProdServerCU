@@ -334,7 +334,8 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 //Send HTML
 app.get("/", (req, res) => {
-
+    
+    jsonArr.length = 0;
     console.log("Inital:  " + jsonArr.length);
     pullAgentSelData();
     console.log("After Agent Select: " + jsonArr.length);
@@ -343,7 +344,6 @@ app.get("/", (req, res) => {
     pullScoreData();
     console.log(new scoreboardPacket().team1S);
     res.json(jsonArr);
-    jsonArr.length = 0;
     console.log("Final: " + jsonArr.length);
 
 
