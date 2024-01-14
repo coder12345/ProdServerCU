@@ -203,18 +203,20 @@ function cardliveConstructor(id, tag, agent, kills, deaths, assists, credits, we
     if (living == 1) {
 
         if (team == 0) {
+            this.scoreboardback = "https://i.imgur.com/fagI1M8.png";
             if (hasUlt == 1) {
-                this.background = "https://i.imgur.com/ZLkVuxm.png"
+                this.background = "https://i.imgur.com/evmNOxp.png"
 
             } else {
-                this.background = "https://i.imgur.com/Q6O5OuA.png"
+                this.background = "https://i.imgur.com/lhR4lt8.png"
             }
         } else {
+            this.scoreboarback = "https://i.imgur.com/0hlC2tL.png";
             if (hasUlt == 1) {
-                this.background = "https://i.imgur.com/l52Rhr7.png"
+                this.background = "https://i.imgur.com/39rbOki.png"
 
             } else {
-                this.background = "https://i.imgur.com/7LRvabU.png"
+                this.background = "https://i.imgur.com/1vsgTgo.png"
             }
         }
         this.agentPic = liveLivingPorts[agent-1];
@@ -252,19 +254,19 @@ function cardliveConstructor(id, tag, agent, kills, deaths, assists, credits, we
 
 }
 function playerLiveData(id, tag, agent, kills, deaths, assists, credits, weapon, sheild, living, team, hasUlt) {
-        this.id = id;
-        this.tag = tag;
-        this.agent = agent;
-        this.kills = kills;
-        this.deaths = deaths;
-        this.assists = assists;
-        this.credits = credits;
-        this.weapon = weapon;
-        this.shield = sheild;
-        this.kda = Math.round((kills + assists / deaths + Number.EPSILON) * 100) / 100;
-        this.team = team;
-        this.living = living;
-        this.hasUlt = hasUlt;
+    this.id = id;
+    this.tag = tag;
+    this.agent = agent;
+    this.kills = kills;
+    this.deaths = deaths;
+    this.assists = assists;
+    this.credits = credits;
+    this.weapon = weapon;
+    this.shield = sheild;
+    this.kda = Math.round((kills + assists / deaths + Number.EPSILON) * 100) / 100;
+    this.team = team;
+    this.living = living;
+    this.hasUlt = hasUlt;
 
 
 }
@@ -273,20 +275,20 @@ function scoreboardPacket() {
     sql2 = "SELECT 'Score' FROM teamTable WHERE id='2';"
     con.query(sql1, function (err, result) {
         if (err) throw err;
-            this.team1S = result;
+        this.team1S = result;
 
     });
     con.query(sql2, function (err, result) {
         if (err) throw err;
-            this.team2S = result;
+        this.team2S = result;
 
     });
 
 
 }
 
-const jsonArr = [];
-const tempArr = [];
+ jsonArr = [];
+ tempArr = [];
 //Connect to Database
 var con = mysql.createConnection({
     host: "sql5.freesqldatabase.com",
@@ -299,56 +301,57 @@ con.connect(function(err) {
     console.log("Connected!");
 });
 
- //Pull agent Select Data
-    function pullAgentSelData() {
-        sql1 = "SELECT * FROM agentSelect;"
-        con.query(sql1, function (err, result) {
-            if (err) throw err;
+//Pull agent Select Data
+function pullAgentSelData() {
+    sql1 = "SELECT * FROM agentSelect;"
+    con.query(sql1, function (err, result) {
+        if (err) throw err;
 
-            for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
 
-                workingArr.push(new agentSelPlayer(i+1, result[i].Agent, result[i].Tag, result[i].locked));
-            }
+            tempArr.push(new agentSelPlayer(i+1, result[i].Agent, result[i].Tag, result[i].locked));
+        }
 
-        });
-    }
-    function pullLiveData() {
-        sql = "SELECT * FROM playerTable;"
-        con.query(sql, function (err, result) {
-            if (err) throw err;
+    });
+}
+function pullLiveData() {
+    sql = "SELECT * FROM playerTable;"
+    con.query(sql, function (err, result) {
+        if (err) throw err;
 
-            for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
 
-                workingArr.push(new cardliveConstructor(i+1, result[i].tag, result[i].agent, result[i].kills, result[i].deaths, result[i].assists, result[i].credits, result[i].weapon, result[i].shield, result[i].living, result[i].team, result[i].hasUlt));
-                console.log(jsonArr.length);
-            }
+            tempArr.push(new cardliveConstructor(i+1, result[i].tag, result[i].agent, result[i].kills, result[i].deaths, result[i].assists, result[i].credits, result[i].weapon, result[i].shield, result[i].living, result[i].team, result[i].hasUlt));
+            console.log(tempArr.length);
+        }
 
-        });
+    });
 
-    }
-    function pullScoreData() {
-        //jsonArr.push(new scoreboardPacket());
-    }
+}
+function pullScoreData() {
+    //jsonArr.push(new scoreboardPacket());
+}
 
 //Format Respnse
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 //Send HTML
 app.get("/", (req, res) => {
-    
-    workingArr.length = 0;
-    console.log("Inital:  " + jsonArr.length);
+
+
+    console.log("Inital:  " + tempArr.length);
     pullAgentSelData();
-    console.log("After Agent Select: " + jsonArr.length);
+    console.log("After Agent Select: " + tempArr.length);
     pullLiveData();
-    console.log("After Live Data: " + jsonArr.length);
+    console.log("After Live Data: " + tempArr.length);
     pullScoreData();
-    console.log(new scoreboardPacket().team1S);
-    if (workingArr.length() == 21) {
-        jsonArr = workingArr
+    console.log(tempArr);
+    if (tempArr.length > 2) {
+        jsonArr = tempArr;
     }
     res.json(jsonArr);
-    console.log("Final: " + jsonArr.length);
+    console.log("Final: " + tempArr.length);
+    tempArr.length = 0;
 
 
 
