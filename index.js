@@ -236,6 +236,14 @@ function cardliveConstructor(id, tag, agent, kills, deaths, assists, credits, we
 
     }
     this.tag = tag;
+    this.kills = kills;
+    this.deaths = deaths;
+    this.assists = assists;
+    if (hasUlt == 1) {
+        this.scoreUlt = "READY"
+    } else {
+        this.scoreUlt = ""
+    }
     if (credits >= 0) {
         this.credits = credits;
     } else {
