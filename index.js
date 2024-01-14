@@ -286,6 +286,7 @@ function scoreboardPacket() {
 }
 
 const jsonArr = [];
+const tempArr = [];
 //Connect to Database
 var con = mysql.createConnection({
     host: "sql5.freesqldatabase.com",
@@ -306,7 +307,7 @@ con.connect(function(err) {
 
             for (let i = 0; i < 10; i++) {
 
-                jsonArr.push(new agentSelPlayer(i+1, result[i].Agent, result[i].Tag, result[i].locked));
+                workingArr.push(new agentSelPlayer(i+1, result[i].Agent, result[i].Tag, result[i].locked));
             }
 
         });
@@ -318,7 +319,7 @@ con.connect(function(err) {
 
             for (let i = 0; i < 10; i++) {
 
-                jsonArr.push(new cardliveConstructor(i+1, result[i].tag, result[i].agent, result[i].kills, result[i].deaths, result[i].assists, result[i].credits, result[i].weapon, result[i].shield, result[i].living, result[i].team, result[i].hasUlt));
+                workingArr.push(new cardliveConstructor(i+1, result[i].tag, result[i].agent, result[i].kills, result[i].deaths, result[i].assists, result[i].credits, result[i].weapon, result[i].shield, result[i].living, result[i].team, result[i].hasUlt));
                 console.log(jsonArr.length);
             }
 
@@ -335,7 +336,7 @@ app.use(express.urlencoded({extended: true}));
 //Send HTML
 app.get("/", (req, res) => {
     
-    jsonArr.length = 0;
+    workingArr.length = 0;
     console.log("Inital:  " + jsonArr.length);
     pullAgentSelData();
     console.log("After Agent Select: " + jsonArr.length);
@@ -343,6 +344,9 @@ app.get("/", (req, res) => {
     console.log("After Live Data: " + jsonArr.length);
     pullScoreData();
     console.log(new scoreboardPacket().team1S);
+    if (workingArr.length() = 21) {
+        jsonArr = workingArr
+    }
     res.json(jsonArr);
     console.log("Final: " + jsonArr.length);
 
